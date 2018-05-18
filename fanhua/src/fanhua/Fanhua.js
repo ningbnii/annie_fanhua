@@ -1,0 +1,259 @@
+var fanhua = fanhua || {};
+fanhua.Fanhua = function () {
+    var s = this;
+    F2xContainer.call(s);
+    s.initUI();
+    s.init();
+};
+F2xExtend(fanhua.Fanhua, F2xContainer);
+fanhua.Fanhua.prototype.initUI = function () {
+    var s = this;
+    //f2x_auto_created_init_start
+	var _d9=new fanhua.save();
+	_d9.name="save";
+	s.save=_d9;
+	Flash2x.d(_d9,{x:512.75,y:929.45});
+	var _d8=new fanhua.clear();
+	_d8.name="clear";
+	s.clear=_d8;
+	Flash2x.d(_d8,{x:378.05,y:929.45});
+	var _d7=Flash2x.t(0,decodeURI("%E9%80%89%E6%8B%A9%E9%A2%9C%E8%89%B2%EF%BC%9A"),20,"#000000","Times New Roman",0,0,105.1,22.15,22,"left",false,false,"multiline",false);
+	Flash2x.d(_d7,{x:21.4,y:1013.4});
+	var _d6=new fanhua.colorPicker();
+	_d6.name="colorPicker";
+	s.colorPicker=_d6;
+	Flash2x.d(_d6,{x:146.3,y:1024.9});
+	var _d5=new fanhua.start();
+	_d5.name="start";
+	s.start=_d5;
+	Flash2x.d(_d5,{x:243.35,y:929.45});
+	var _d4=Flash2x.t(2,decodeURI(""),20,"#000000","Times New Roman",0,0,100,22.15,24.15,"left",false,false,"multiline",false);
+	_d4.name="k_input";
+	s.k_input=_d4;
+	Flash2x.d(_d4,{x:121.3,y:967.9});
+	var _d3=Flash2x.t(0,decodeURI("%E9%AD%94%E5%8A%9B%E5%80%BC%E4%BA%8C%EF%BC%9A"),20,"#000000","Times New Roman",0,0,159.1,22.15,22,"left",false,false,"multiline",false);
+	Flash2x.d(_d3,{x:21.4,y:967.9});
+	var _d2=Flash2x.t(2,decodeURI(""),20,"#000000","Times New Roman",0,0,100,22.15,24.15,"left",false,false,"multiline",false);
+	_d2.name="r_input";
+	s.r_input=_d2;
+	Flash2x.d(_d2,{x:121.3,y:933.75});
+	var _d1=Flash2x.t(0,decodeURI("%E9%AD%94%E5%8A%9B%E5%80%BC%E4%B8%80%EF%BC%9A"),20,"#000000","Times New Roman",0,0,165.9,22.15,22,"left",false,false,"multiline",false);
+	Flash2x.d(_d1,{x:21.4,y:933.8});
+	var _d0=Flash2x.s({type:0,data:"AoHksIQPAAIAAEFIwPAAgAoHAoIQPAAIAAEFIwPAAg"},null,{type:0,color:"#000000",lineWidth:1,caps:"round",joints:"round",miter:"10"});
+	Flash2x.d(_d0,{x:171.3,y:961.9});
+	s.addChild(_d0);
+	s.addChild(_d1);
+	s.addChild(_d2);
+	s.addChild(_d3);
+	s.addChild(_d4);
+	s.addChild(_d5);
+	s.addChild(_d6);
+	s.addChild(_d7);
+	s.addChild(_d8);
+	s.addChild(_d9);
+	//f2x_auto_created_init_end
+
+};
+
+fanhua.Fanhua.prototype.init = function () {
+    var s = this;
+    s.host = 'http://drawing.api.sdningrun.com';
+    var r = 0;
+    var R = 200;
+    var d = 0;
+    s.r_input.text = 95;
+    s.k_input.text = 65;
+    var time = 0;
+    var stop = true;
+    s.color = '#000000';
+    s.shape = new annie.Shape();
+    s.huaban = new annie.Sprite();
+
+    s.addChild(s.huaban);
+    s.huaban.addChild(s.shape);
+
+    s.addEventListener(annie.Event.ENTER_FRAME,frame);
+    // initCircle();
+    s.start.addEventListener(annie.MouseEvent.CLICK, function () {
+        if(stop){
+            s.start.start_btn_text.text = '停止';
+            stop = false;
+
+            // 判断有没有修改参数，修改参数了，要重新设置开始点，如果没有修改，则继续之前的绘画
+            if(r!=parseFloat(s.r_input.text) || d!=parseFloat(s.k_input.text)){
+
+                if (s.r_input.text) {
+                    r = parseFloat(s.r_input.text);
+                }
+                if (s.k_input.text) {
+                    d = parseFloat(s.k_input.text);
+                }
+
+
+                // 修改了参数，重新从原点开始绘画
+                s.angle = 0;
+                s.tempX = (R-r) * Math.cos(s.angle) + d * Math.cos((R - r) / r * s.angle) + 320;
+                s.tempY = 568;
+            }
+        }else{
+            s.start.start_btn_text.text = '开始';
+            stop = true;
+            s.r_input.text = r;
+            s.k_input.text = d;
+        }
+
+
+        // initCircle();
+
+
+    }.bind(s));
+
+    // 选择颜色
+    s.colorPicker.addEventListener(annie.MouseEvent.CLICK,function (e) {
+        if(s.colorObj){
+            s.colorObj.scaleX = 1;
+            s.colorObj.scaleY = 1;
+        }
+        e.target.scaleX = 2;
+        e.target.scaleY = 2;
+        s.colorObj = e.target;
+
+        if(e.target.parent instanceof fanhua.c1){
+            s.color = '#000000';
+        }else if(e.target.parent instanceof fanhua.c2){
+            s.color = '#FF0000';
+        }else if(e.target.parent instanceof fanhua.c3){
+            s.color = '#00FF00';
+        }else if(e.target.parent instanceof fanhua.c4){
+            s.color = '#0000FF';
+        }else if(e.target.parent instanceof fanhua.c5){
+            s.color = '#FFFF00';
+        }else if(e.target.parent instanceof fanhua.c6){
+            s.color = '#00FFFF';
+        }else if(e.target.parent instanceof fanhua.c7){
+            s.color = '#FF00FF';
+        }else if(e.target.parent instanceof fanhua.c8){
+            s.color = '';
+        }
+    }.bind(s));
+
+    // 清空画布，动画停止
+    s.clear.addEventListener(annie.MouseEvent.CLICK,function (e) {
+        stop = true;
+        s.start.start_btn_text.text = '开始';
+        s.shape.clear();
+        s.angle = 0;
+        s.tempX = (R-r) * Math.cos(s.angle) + d * Math.cos((R - r) / r * s.angle) + 320;
+        s.tempY = 568;
+    }.bind(s));
+
+    // 保存
+    s.save.addEventListener(annie.MouseEvent.CLICK,function(){
+        var s =  this;
+        var pic = annie.toDisplayDataURL(s.huaban,{
+            x:0,
+            y:248,
+            width:640,
+            height:640
+        },{
+            type:'png'
+        });
+        pic = pic.replace(/^data:image\/(png|jpg);base64,/,"");
+        if(pic != 'iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAAAMzckjAAAgAElEQVR4Xu3WQQEAAAgCMelf2iA3GzB8sHMECBAgQIAAAQIpgaXSCkuAAAECBAgQIHAGoCcgQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAAED0A8QIECAAAECBGICBmCscHEJECBAgAABAgagHyBAgAABAgQIxAQMwFjh4hIgQIAAAQIEDEA/QIAAAQIECBCICRiAscLFJUCAAAECBAgYgH6AAAECBAgQIBATMABjhYtLgAABAgQIEDAA/QABAgQIECBAICZgAMYKF5cAAQIECBAgYAD6AQIECBAgQIBATMAAjBUuLgECBAgQIEDAAPQDBAgQIECAAIGYgAEYK1xcAgQIECBAgIAB6AcIECBAgAABAjEBAzBWuLgECBAgQIAAAQPQDxAgQIAAAQIEYgIGYKxwcQkQIECAAAECBqAfIECAAAECBAjEBAzAWOHiEiBAgAABAgQMQD9AgAABAgQIEIgJGICxwsUlQIAAAQIECBiAfoAAAQIECBAgEBMwAGOFi0uAAAECBAgQMAD9AAECBAgQIEAgJmAAxgoXlwABAgQIECBgAPoBAgQIECBAgEBMwACMFS4uAQIECBAgQMAA9AMECBAgQIAAgZiAARgrXFwCBAgQIECAgAHoBwgQIECAAAECMQEDMFa4uAQIECBAgAABA9APECBAgAABAgRiAgZgrHBxCRAgQHq7AAUAAADASURBVIAAAQIGoB8gQIAAAQIECMQEDMBY4eISIECAAAECBAxAP0CAAAECBAgQiAkYgLHCxSVAgAABAgQIGIB+gAABAgQIECAQEzAAY4WLS4AAAQIECBAwAP0AAQIECBAgQCAmYADGCheXAAECBAgQIGAA+gECBAgQIECAQEzAAIwVLi4BAgQIECBAwAD0AwQIECBAgACBmIABGCtcXAIECBAgQICAAegHCBAgQIAAAQIxAQMwVri4BAgQIECAAIEHevYCgVUGXoYAAAAASUVORK5CYII='){
+            // 保存
+            var openid = cookie('openid');
+            $.ajax({
+                type:'POST',
+                url:s.host+'/fanhua/add',
+                async:false,
+                data:{
+                    openid:openid,
+                    pic:pic
+                },
+                success:function(data){
+                    if(data.status == 200){
+
+                    }else{
+                        alert(data.error);
+                    }
+                }
+            })
+        }
+    }.bind(this));
+
+    function initCircle() {
+        if (s.circleLayer) {
+            s.removeChild(s.circleLayer);
+        }
+        s.circleLayer = new annie.Sprite();
+        s.addChild(s.circleLayer);
+        s.bigCircle = new annie.Shape();
+        s.circleLayer.addChild(s.bigCircle);
+        s.bigCircle.beginStroke('#ff0000', 1);
+        s.bigCircle.drawCircle(320, 568, R);
+        s.bigCircle.endStroke();
+        s.bigCircle.beginFill('#ff0000');
+        s.bigCircle.drawCircle(320, 568, 5);
+        s.bigCircle.endFill();
+
+
+        s.smallCircleLayer = new annie.Sprite();
+        s.circleLayer.addChild(s.smallCircleLayer);
+        s.smallCircle = new annie.Shape();
+        s.smallCircleLayer.addChild(s.smallCircle);
+        s.smallCircle.beginStroke('#12ff6b', 1);
+        s.smallCircle.drawCircle(0, 0, r);
+        s.smallCircle.endStroke();
+        s.smallCircle.beginFill('#ff0000');
+        s.smallCircle.drawCircle(0, 0, 5);
+        s.smallCircle.endFill();
+        s.smallCircle.beginFill('#12ff6b');
+        s.smallCircle.drawCircle(d, 0, 5);
+        s.smallCircle.endFill();
+        s.smallCircle.beginStroke('#000000');
+        s.smallCircle.moveTo(0, 0);
+        s.smallCircle.lineTo(d, 0);
+        s.smallCircle.endStroke();
+
+        s.smallCircleLayer.x = 320 + (R-r);
+        s.smallCircleLayer.y = 568;
+    }
+
+    function frame() {
+        if (!stop) {
+            time++;
+            s.angle += 0.1;
+            // 小圆移动
+            // var smallX = (R-r) * Math.cos(s.angle) + 320;
+            // var smallY = (R-r) * Math.sin(s.angle) + 568;
+            // s.smallCircleLayer.x = smallX;
+            // s.smallCircleLayer.y = smallY;
+            // 计算小圆自转弧度
+
+            // s.smallCircleLayer.rotation += -(0.1 * R / r) * 180 / Math.PI;
+            if(s.color){
+                s.shape.beginStroke(s.color, 1);
+            }else{
+                var r1 = Math.round(Math.random() * 255);
+                var g1 = Math.round(Math.random() * 255);
+                var b1 = Math.round(Math.random() * 255);
+                // r1 = g1 = b1 = 0;
+                s.shape.beginStroke('rgb(' + r1 + ',' + g1 + ',' + b1 + ')', 1);
+            }
+
+            s.shape.moveTo(s.tempX, s.tempY);
+            // var x = (R - r) * Math.cos(s.angle) + r * Math.cos((R - r) / r * s.angle) + 320;
+            var x = (R-r) * Math.cos(s.angle) + d * Math.cos((R - r) / r * s.angle) + 320;
+            var y = (R-r) * Math.sin(s.angle) - d * Math.sin((R - r) / r * s.angle) + 568;
+            // var y = (R - r) * Math.sin(s.angle) - r * Math.sin((R - r) / r * s.angle) + 568;
+
+            s.shape.lineTo(x, y);
+            s.shape.endStroke();
+            s.tempX = x;
+            s.tempY = y;
+
+        }
+
+
+    }
+};
